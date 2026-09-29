@@ -8,7 +8,7 @@ export default [
   { ignores: ['**/node_modules/**', '**/dist/**', '**/coverage/**'] },
   js.configs.recommended,
   {
-    files: ['server/**/*.js', 'scripts/**/*.js', 'eslint.config.js'],
+    files: ['server/**/*.js', 'scripts/**/*.js', 'eslint.config.js', 'client/vite.config.js'],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'module',
