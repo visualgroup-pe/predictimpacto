@@ -35,7 +35,8 @@ predictimpacto/
 ├── scripts/seed.js         # carga de datos hacia MongoDB
 ├── data/                   # CSV de entrada (opcionales) y metricas.json
 ├── docs/capturas/          # capturas del artículo
-└── docker-compose.yml      # MongoDB local opcional
+├── docker-compose.yml      # MongoDB local opcional
+└── render.yaml             # despliegue en Render (Blueprint)
 ```
 
 ## Requisitos
@@ -117,6 +118,7 @@ npm run dev      # API en http://localhost:4000 y cliente en http://localhost:51
 ```
 
 Producción: `npm run build && npm start` (la API sirve también el build del cliente en el puerto `PORT`).
+Para publicarla en internet, ver [Despliegue](#despliegue-en-internet-render--mongodb-atlas).
 
 ## Pruebas y calidad
 
@@ -171,6 +173,50 @@ Implementado en `server/src/services/reposicion.js` (funciones puras, con prueba
 
 El redondeo hacia arriba es un criterio conservador: nunca subestima el inventario requerido.
 La fecha de cada recomendación es el primer día del horizonte de predicción (fecha de decisión).
+
+## Despliegue en internet (Render + MongoDB Atlas)
+
+Las tres capas se despliegan intactas: un único servicio web en Render ejecuta la API y sirve el
+build del cliente; la persistencia es un clúster de MongoDB Atlas. GitHub Pages no sirve para esto
+porque solo aloja archivos estáticos y no puede ejecutar la API.
+
+### 1. MongoDB Atlas (plan gratuito M0)
+
+1. Crea un clúster **M0** en AWS, región **N. Virginia (us-east-1)**: es la misma región del servicio
+   de Render y la más cercana a Lima de las disponibles.
+2. En **Database Access**, crea un usuario de base de datos con contraseña (rol _Read and write to any
+   database_).
+3. En **Network Access**, agrega `0.0.0.0/0`: el plan gratuito de Render no tiene IP fija.
+4. En **Connect → Drivers**, copia la cadena `mongodb+srv://…` y añade el nombre de la base antes de
+   los parámetros, por ejemplo:
+   `mongodb+srv://usuario:clave@cluster0.xxxxx.mongodb.net/predictimpacto?retryWrites=true&w=majority`
+
+### 2. Sembrar Atlas desde tu máquina
+
+En tu `.env` local, apunta `MONGODB_URI` a la cadena de Atlas y define `SEED_ADMIN_USER` y
+`SEED_ADMIN_PASSWORD`. Usa una contraseña robusta: el sitio será público. Luego ejecuta:
+
+```bash
+npm run seed
+```
+
+El usuario y los datos quedan en Atlas; Render no necesita las variables `SEED_*`.
+
+### 3. Servicio web en Render
+
+1. En Render, **New → Blueprint** y conecta el repositorio (autoriza el acceso si es privado).
+   Elige la rama a desplegar.
+2. Render lee `render.yaml`: build `npm ci --include=dev && npm run build`, arranque `npm start` y
+   health check en `/api/v1/salud`. `JWT_SECRET` se genera solo.
+3. Cuando lo pida, pega la cadena de Atlas en `MONGODB_URI` y confirma con **Apply**.
+4. Al terminar, abre `https://<nombre-del-servicio>.onrender.com/api/v1/salud`: debe responder
+   `{"estado":"ok","mongo":true}`. La plataforma está en `https://<nombre-del-servicio>.onrender.com`.
+
+Cada push a la rama elegida vuelve a desplegar. Las rutas de la [guía de capturas](#guía-de-capturas)
+funcionan igual reemplazando `http://localhost:5173` por la URL de Render.
+
+**Plan gratuito:** el servicio se suspende tras 15 minutos sin tráfico. La primera visita después
+tarda de 30 a 60 segundos en despertar; abre la URL un minuto antes de una presentación.
 
 ## Guía de capturas
 
