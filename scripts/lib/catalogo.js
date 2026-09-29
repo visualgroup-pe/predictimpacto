@@ -7,7 +7,7 @@
  */
 export const CATALOGO = [
   {
-    sku: 'CAF-001',
+    sku: 'IMP-001',
     nombre: 'CAFÉ',
     categoria: 'Bebidas calientes',
     total: 1128,
@@ -19,7 +19,7 @@ export const CATALOGO = [
     estacional: -0.12,
   },
   {
-    sku: 'EMP-002',
+    sku: 'IMP-002',
     nombre: 'EMPANADA',
     categoria: 'Salados',
     total: 438,
@@ -31,7 +31,7 @@ export const CATALOGO = [
     estacional: 0,
   },
   {
-    sku: 'KEK-003',
+    sku: 'IMP-003',
     nombre: 'KEKE',
     categoria: 'Pastelería',
     total: 311,
@@ -43,7 +43,7 @@ export const CATALOGO = [
     estacional: 0,
   },
   {
-    sku: 'TAR-004',
+    sku: 'IMP-004',
     nombre: 'TARTALETA',
     categoria: 'Pastelería',
     total: 253,
@@ -55,7 +55,7 @@ export const CATALOGO = [
     estacional: 0,
   },
   {
-    sku: 'INF-005',
+    sku: 'IMP-005',
     nombre: 'INFUSIÓN',
     categoria: 'Bebidas calientes',
     total: 208,
@@ -67,7 +67,7 @@ export const CATALOGO = [
     estacional: -0.2,
   },
   {
-    sku: 'FRA-006',
+    sku: 'IMP-006',
     nombre: 'FRAPPÉ MEDIANO',
     categoria: 'Bebidas frías',
     total: 175,
@@ -79,7 +79,7 @@ export const CATALOGO = [
     estacional: 0.35,
   },
   {
-    sku: 'GAS-007',
+    sku: 'IMP-007',
     nombre: 'GASEOSA',
     categoria: 'Bebidas frías',
     total: 175,
@@ -91,7 +91,7 @@ export const CATALOGO = [
     estacional: 0.25,
   },
   {
-    sku: 'ENC-008',
+    sku: 'IMP-008',
     nombre: 'ENCHILADA',
     categoria: 'Salados',
     total: 158,
@@ -103,7 +103,7 @@ export const CATALOGO = [
     estacional: 0,
   },
   {
-    sku: 'HAM-009',
+    sku: 'IMP-009',
     nombre: 'HAMBURGUESA',
     categoria: 'Salados',
     total: 129,
@@ -115,7 +115,7 @@ export const CATALOGO = [
     estacional: 0,
   },
   {
-    sku: 'GAL-010',
+    sku: 'IMP-010',
     nombre: 'GALLETA',
     categoria: 'Pastelería',
     total: 101,
