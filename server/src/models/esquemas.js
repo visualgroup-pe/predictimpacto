@@ -26,7 +26,13 @@ export const jsonSchemas = {
       nombre: texto,
       categoria: texto,
       // Exclusivo en ambos extremos: z(0) y z(1) son infinitos.
-      nivelServicio: { ...numero, exclusiveMinimum: 0, exclusiveMaximum: 1 },
+      nivelServicio: {
+        ...numero,
+        minimum: 0,
+        exclusiveMinimum: true,
+        maximum: 1,
+        exclusiveMaximum: true,
+      },
       leadTimeDias: { ...numero, minimum: 1 },
       existenciaActual: noNegativo,
       existenciaMinima: noNegativo,

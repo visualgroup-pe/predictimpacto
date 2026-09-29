@@ -1,0 +1,12 @@
+{
+  "modeloSeleccionado": "Random Forest",
+  "modeloVersion": "rf-v1.0",
+  "criterioSeleccion": "Menor RMSE y mayor R² en el conjunto de prueba",
+  "modelos": [
+    { "modelo": "Random Forest", "mae": 2.3101, "rmse": 5.552, "r2": 0.6803 },
+    { "modelo": "LightGBM", "mae": 2.2922, "rmse": 5.7559, "r2": 0.6564 },
+    { "modelo": "Gradient Boosting", "mae": 2.3553, "rmse": 6.217, "r2": 0.5991 },
+    { "modelo": "SVR", "mae": 3.4051, "rmse": 6.6435, "r2": 0.5422 },
+    { "modelo": "XGBoost", "mae": 2.6012, "rmse": 6.6702, "r2": 0.5385 }
+  ]
+}
