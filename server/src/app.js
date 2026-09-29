@@ -25,9 +25,11 @@ export function crearApp({ jwtSecret, jwtExpiresIn = '8h', metricasPath, clientD
   if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'));
 
   const api = express.Router();
-  api.get('/salud', (_req, res) =>
-    res.json({ estado: 'ok', mongo: mongoose.connection.readyState === 1 }),
-  );
+  // Usado como health check por la plataforma de despliegue: 503 si MongoDB no responde.
+  api.get('/salud', (_req, res) => {
+    const mongo = mongoose.connection.readyState === 1;
+    res.status(mongo ? 200 : 503).json({ estado: mongo ? 'ok' : 'degradado', mongo });
+  });
   api.use('/auth', rutasAuth({ jwtSecret, jwtExpiresIn }));
   api.use(requiereAuth(jwtSecret));
   api.use('/productos', productos);

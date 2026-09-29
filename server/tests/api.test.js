@@ -250,6 +250,14 @@ describe('validación $jsonSchema a nivel de colección', () => {
   });
 });
 
+describe('GET /api/v1/salud', () => {
+  test('responde sin autenticación e informa la conexión a MongoDB', async () => {
+    const res = await request(app).get('/api/v1/salud');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ estado: 'ok', mongo: true });
+  });
+});
+
 describe('rutas desconocidas', () => {
   test('404 con mensaje', async () => {
     const res = await get('/api/v1/inexistente');
