@@ -1,0 +1,26 @@
+# Blueprint de Render: un único servicio web que ejecuta la API Express y sirve
+# el build del cliente React. La base de datos es MongoDB Atlas (externa).
+services:
+  - type: web
+    name: predictimpacto
+    runtime: node
+    plan: free
+    region: virginia
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/v1/salud
+    envVars:
+      - key: NODE_VERSION
+        value: '22'
+      - key: NODE_ENV
+        value: production
+      # Evita descargar el binario de MongoDB que solo usan las pruebas.
+      - key: MONGOMS_DISABLE_POSTINSTALL
+        value: '1'
+      # Cadena de conexión de Atlas: se ingresa en el panel de Render, nunca en el repositorio.
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 8h
