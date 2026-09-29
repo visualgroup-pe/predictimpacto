@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { Prediccion, Producto } from '../models/index.js';
 import { parsearEntero, parsearSku } from '../utils/validacion.js';
 
-export const HORIZONTE_MAXIMO = 90;
+import { HORIZONTE_MAXIMO } from '../services/recomendaciones.js';
 const DIA_MS = 86_400_000;
 
 const router = Router();
