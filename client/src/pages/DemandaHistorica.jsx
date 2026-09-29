@@ -23,7 +23,18 @@ export default function DemandaHistorica() {
   const totales = useMemo(() => {
     if (!datos?.datos.length) return null;
     const total = datos.datos.reduce((s, d) => s + d.total, 0);
-    return { total, periodos: datos.datos.length, promedio: total / datos.datos.length };
+    // Rango real cubierto (en semanal, la etiqueta de cada semana es su lunes).
+    const min = datos.rangoDisponible?.min ?? datos.datos[0].fecha;
+    const max = datos.rangoDisponible?.max ?? datos.datos.at(-1).fecha;
+    const inicio = datos.desde && datos.desde > min ? datos.desde : min;
+    const fin = datos.hasta && datos.hasta < max ? datos.hasta : max;
+    return {
+      total,
+      periodos: datos.datos.length,
+      promedio: total / datos.datos.length,
+      inicio,
+      fin,
+    };
   }, [datos]);
 
   const largo = (datos?.datos.length ?? 0) > 120 || granularidad === 'semanal';
@@ -60,7 +71,7 @@ export default function DemandaHistorica() {
             <TarjetaMetrica
               etiqueta="Periodo"
               valor={`${numero(totales.periodos)} ${granularidad === 'semanal' ? 'semanas' : 'días'}`}
-              detalle={`${fechaLarga(datos.datos[0].fecha)} – ${fechaLarga(datos.datos.at(-1).fecha)}`}
+              detalle={`${fechaLarga(totales.inicio)} – ${fechaLarga(totales.fin)}`}
             />
             <TarjetaMetrica etiqueta="Productos" valor={datos.skus.length} />
           </div>
