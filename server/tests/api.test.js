@@ -78,6 +78,7 @@ describe('GET /api/v1/ventas', () => {
     expect(res.status).toBe(200);
     expect(res.body.granularidad).toBe('diaria');
     expect(res.body.skus).toEqual(['CAF-001', 'GAL-010', 'KEK-003']);
+    expect(res.body.rangoDisponible).toEqual({ min: '2024-01-01', max: '2024-01-14' });
     expect(res.body.datos).toEqual([
       { fecha: '2024-01-01', total: 4, 'CAF-001': 1, 'KEK-003': 2, 'GAL-010': 1 },
       { fecha: '2024-01-02', total: 5, 'CAF-001': 2, 'KEK-003': 2, 'GAL-010': 1 },

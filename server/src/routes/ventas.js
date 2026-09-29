@@ -55,12 +55,17 @@ router.get('/', async (req, res) => {
   ]);
 
   const skus = sku ? [sku] : await Venta.distinct('sku', filtro);
+  const [rango] = await Venta.aggregate([
+    { $group: { _id: null, min: { $min: '$fecha' }, max: { $max: '$fecha' } } },
+  ]);
+  const iso = (f) => f.toISOString().slice(0, 10);
 
   res.json({
     granularidad,
     sku: sku ?? 'TODOS',
     desde: desde?.toISOString().slice(0, 10) ?? null,
     hasta: hasta?.toISOString().slice(0, 10) ?? null,
+    rangoDisponible: rango ? { min: iso(rango.min), max: iso(rango.max) } : null,
     skus: skus.sort(),
     total: datos.length,
     datos,
