@@ -1,0 +1,32 @@
+{
+  "name": "PredictImpacto",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "shutdownAction": "stopCompose",
+  "containerEnv": {
+    // Las pruebas descargan su propio binario de MongoDB solo si se ejecutan.
+    "MONGOMS_DISABLE_POSTINSTALL": "1"
+  },
+  "forwardPorts": [4000],
+  "portsAttributes": {
+    "4000": {
+      "label": "PredictImpacto",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  // Primera creación: instala, crea .env, siembra MongoDB y compila el cliente.
+  "postCreateCommand": "bash .devcontainer/preparar.sh",
+  // Cada arranque del codespace: levanta la plataforma en segundo plano.
+  "postStartCommand": "bash .devcontainer/iniciar.sh",
+  // Al abrir la terminal: muestra la URL y las credenciales de acceso.
+  "postAttachCommand": "bash .devcontainer/bienvenida.sh",
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md"]
+    },
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "mongodb.mongodb-vscode"]
+    }
+  }
+}

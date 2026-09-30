@@ -1,0 +1,18 @@
+# Entorno de GitHub Codespaces: contenedor de Node.js + MongoDB.
+# La app comparte la red del servicio db, por lo que MongoDB está en localhost:27017.
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+    network_mode: service:db
+
+  db:
+    image: mongo:8
+    restart: unless-stopped
+    volumes:
+      - mongodb-data:/data/db
+
+volumes:
+  mongodb-data:
