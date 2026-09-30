@@ -35,6 +35,7 @@ predictimpacto/
 ├── scripts/seed.js         # carga de datos hacia MongoDB
 ├── data/                   # CSV de entrada (opcionales) y metricas.json
 ├── docs/capturas/          # capturas del artículo
+├── .devcontainer/          # entorno de GitHub Codespaces (Node.js + MongoDB)
 ├── docker-compose.yml      # MongoDB local opcional
 └── render.yaml             # despliegue en Render (Blueprint)
 ```
@@ -118,7 +119,7 @@ npm run dev      # API en http://localhost:4000 y cliente en http://localhost:51
 ```
 
 Producción: `npm run build && npm start` (la API sirve también el build del cliente en el puerto `PORT`).
-Para publicarla en internet, ver [Despliegue](#despliegue-en-internet-render--mongodb-atlas).
+Para verla sin instalar nada, ver [Codespaces](#ver-la-plataforma-en-github-codespaces-sin-instalar-nada); para publicarla en internet, ver [Despliegue](#despliegue-en-internet-render--mongodb-atlas).
 
 ## Pruebas y calidad
 
@@ -173,6 +174,33 @@ Implementado en `server/src/services/reposicion.js` (funciones puras, con prueba
 
 El redondeo hacia arriba es un criterio conservador: nunca subestima el inventario requerido.
 La fecha de cada recomendación es el primer día del horizonte de predicción (fecha de decisión).
+
+## Ver la plataforma en GitHub Codespaces (sin instalar nada)
+
+El repositorio incluye un entorno de Codespaces (`.devcontainer/`) con Node.js y MongoDB que
+instala, siembra y levanta la plataforma de forma automática.
+
+1. En GitHub, abre el repositorio y pulsa **Code → Codespaces → Create codespace on _rama_**.
+2. La primera vez tarda unos minutos: instala dependencias, arranca MongoDB, siembra los datos y
+   compila el cliente.
+3. Al terminar se abre la plataforma en una pestaña nueva y la terminal muestra la URL, el usuario
+   y la contraseña. Si la pestaña no se abre, ve a **Puertos → PredictImpacto** y pulsa el globo.
+
+- **Credenciales.** Se crea el usuario `admin` con una contraseña aleatoria, guardada en el `.env`
+  del codespace. Para fijar las tuyas, crea antes los secretos de Codespaces `SEED_ADMIN_USER` y
+  `SEED_ADMIN_PASSWORD` (GitHub → Settings → Codespaces → Secrets).
+- **Compartir.** El puerto es privado: solo tú, con tu sesión de GitHub, puedes abrirlo. Para
+  mostrarlo a otra persona, en **Puertos**, clic derecho → **Visibilidad del puerto → Public**; quien
+  tenga la URL verá la pantalla de acceso. Vuelve a **Private** al terminar.
+- **Uso y costo.** El codespace se detiene tras 30 minutos sin actividad y se reanuda desde
+  [github.com/codespaces](https://github.com/codespaces) conservando los datos. Las cuentas
+  personales incluyen horas gratuitas al mes; en repositorios de una organización, el uso depende de
+  la configuración de la organización. Si la opción aparece deshabilitada, un administrador debe
+  habilitar Codespaces en la configuración de la organización.
+- **Resembrar** los datos: `npm run seed` en la terminal del codespace.
+
+La [guía de capturas](#guía-de-capturas) funciona igual reemplazando `http://localhost:5173` por la
+URL del codespace.
 
 ## Despliegue en internet (Render + MongoDB Atlas)
 
